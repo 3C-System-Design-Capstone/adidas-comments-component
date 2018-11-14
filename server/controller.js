@@ -5,9 +5,9 @@ const { Op } = Sequelize;
 
 module.exports = {
   get: (req, res) => {
+    const { id } = req.params;
 
     if (Object.keys(req.query).length > 0) {
-      const { id } = req.params;
       const { type, limit, filters } = req.query;
       let field;
       if (type === 'relevant') {
@@ -45,7 +45,6 @@ module.exports = {
           });
       }
     } else {
-      const { id } = req.params;
       Comments.findAll({ where: { prodId: id } })
         .then((result) => {
           res.status(200).send(result);
