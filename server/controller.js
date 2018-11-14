@@ -5,7 +5,7 @@ const { Op } = Sequelize;
 
 module.exports = {
   get: (req, res) => {
-    const { id } = req.params;
+    const id = req.query.product;
     Comments.findAll({ where: { prodId: id } })
       .then((result) => {
         res.status(200).send(result);
@@ -54,5 +54,49 @@ module.exports = {
           console.error(err);
         });
     }
+  },
+  post: (req, res) => {
+    // const {
+    //   user,
+    //   prodRating,
+    //   yesRating,
+    //   noRating,
+    //   date,
+    //   body,
+    //   verified,
+    //   recommend,
+    //   size,
+    //   width,
+    //   comfort,
+    //   quality,
+    //   response,
+    //   header,
+    // } = req.data;
+
+    // const prodId = req.params;
+
+    // Comments.create({
+    //   user,
+    //   prodRating,
+    //   yesRating,
+    //   noRating,
+    //   date,
+    //   body,
+    //   verified,
+    //   recommend,
+    //   size,
+    //   width,
+    //   comfort,
+    //   quality,
+    //   response,
+    //   prodId,
+    //   header,
+    // }, (err, data) => {
+    //   if (err) {
+    //     res.send(err);
+    //   } else {
+    //     res.send(data);
+    //   }
+    // });
   },
 };

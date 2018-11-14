@@ -40,7 +40,7 @@ class App extends React.Component {
 
   fetch(prodId) {
     axios
-      .get(`/api/prodId:${prodId}`)
+      .get(`/api/comments?product=${prodId}`)
       .then(result => {
         console.log(result);
         this.setState({
