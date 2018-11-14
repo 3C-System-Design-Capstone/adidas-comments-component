@@ -40,7 +40,7 @@ class App extends React.Component {
 
   fetch(prodId) {
     axios
-      .get(`/api/comments?product=${prodId}`)
+      .get(`/api/products/${prodId}/comments`)
       .then(result => {
         console.log(result);
         this.setState({
@@ -56,7 +56,7 @@ class App extends React.Component {
   fetchComments(type, limit, filters, prodId) {
     filters = JSON.stringify(filters);
     axios
-      .get(`/api/prodId:${prodId}/${type}/limit=${limit}?filters=${filters}`)
+      .get(`/api/products/${prodId}/comments?type=${type}&limit=${limit}&filters=${filters}`)
       .then(result => {
         this.setState({
           comments: result.data,
