@@ -7,14 +7,14 @@ const connection = new Sequelize(
   process.env.DB_PASSWORD,
   {
     host: process.env.HOSTNAME,
-    dialect: 'mysql',
+    dialect: 'postgres',
   },
 );
 
 connection
   .authenticate()
   .then(() => {
-    console.log('MySQL connection has been established successfully');
+    console.log('POSTGRES connection has been established successfully');
   })
   .catch((err) => {
     console.error('Unable to connect to database: ', err);

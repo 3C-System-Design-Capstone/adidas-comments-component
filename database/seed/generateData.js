@@ -2,11 +2,8 @@ const faker = require('faker');
 const fs = require('fs');
 const dataToSeed = fs.createWriteStream('./database/dataToSeed.csv');
 
-const fakeData = [];
-
 dataToSeed.write('user, prodRating, yesRating, noRating, date, body, verified, recommend, size, width, comfort, quality, response, prodId, header\n');
 
-let count = 0;
 console.time("generateData");
 
 for (let j = 1; j <= 1000; j++) {
