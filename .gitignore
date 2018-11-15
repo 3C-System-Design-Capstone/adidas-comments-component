@@ -3,3 +3,6 @@ client/dist/bundle.js
 config.js
 coverage
 .env
+.DS_store
+database/dataToSeed.csv
+database/smallData.csv
