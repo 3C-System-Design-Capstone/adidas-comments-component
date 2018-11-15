@@ -1,23 +1,12 @@
-const Sequelize = require('sequelize');
 require('dotenv').config();
+const mongoose = require('mongoose');
 
-const connection = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USERNAME,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.HOSTNAME,
-    dialect: 'mysql',
-  },
-);
+mongoose.connect("mongodb://localhost/todolist");
 
-connection
-  .authenticate()
-  .then(() => {
-    console.log('MySQL connection has been established successfully');
-  })
-  .catch((err) => {
-    console.error('Unable to connect to database: ', err);
-  });
+const connection = mongoose.connection;
+
+connection.on("error", console.error.bind(console, "connection error"));
+
+connection.once("open", () => console.log("connected to mongodb"));
 
 module.exports = connection;

@@ -1,42 +1,23 @@
-const Sequelize = require('sequelize');
-const connection = require('./');
+const mongoose = require('mongoose');
 
-const Comments = connection.define(
-  'comment',
-  {
-    id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    user: Sequelize.STRING,
-    prodRating: Sequelize.INTEGER,
-    yesRating: Sequelize.INTEGER,
-    noRating: Sequelize.INTEGER,
-    date: Sequelize.DATE,
-    body: Sequelize.TEXT,
-    verified: Sequelize.BOOLEAN,
-    recommend: Sequelize.BOOLEAN,
-    size: Sequelize.INTEGER,
-    width: Sequelize.INTEGER,
-    comfort: Sequelize.INTEGER,
-    quality: Sequelize.INTEGER,
-    response: Sequelize.TEXT,
-    prodId: Sequelize.INTEGER,
-    header: Sequelize.TEXT,
-  },
-  {
-    createdAt: false,
-  },
-);
+const commentsSchema = mongoose.Schema({
+  user: { type: String },
+  prodRating: { type: Number },
+  yesRating: { type: Number },
+  noRating: { type: Number },
+  date: { type: Date },
+  body: { type: String },
+  verified: { type: Boolean },
+  recommend: { type: Boolean },
+  size: { type: Number },
+  width: { type: Number },
+  comfort: { type: Number },
+  quality: { type: Number },
+  response: { type: String },
+  prodId: { type: Number },
+  header: { type: String },
+});
 
-connection
-  .sync()
-  .then(() => {
-    console.log('MySQL connection synced');
-  })
-  .catch((err) => {
-    console.error('Synced failed: ', err);
-  });
+const Comments = mongoose.model("Comment", commentsSchema);
 
 module.exports = Comments;
