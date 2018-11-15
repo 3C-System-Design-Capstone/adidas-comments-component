@@ -7,6 +7,7 @@ const queryParamsHandler = (req, res) => {
   const { id } = req.params;
   const { type, limit, filters } = req.query;
   let field;
+  let queryObj;
   if (type === 'relevant') {
     field = 'user';
   } else if (type === 'helpfulButton') {
@@ -16,36 +17,28 @@ const queryParamsHandler = (req, res) => {
   }
 
   if (filters !== '[]') {
-    console.log(filters);
-    Comments.findAll({
-      order: [[`${field}`, 'DESC']],
-      limit: parseInt(limit, 10),
-      where: { prodRating: { [Op.or]: JSON.parse(filters) }, prodId: id },
-    })
-      .then((result) => {
-        res.status(200).send(result);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    queryObj = { prodRating: { [Op.or]: JSON.parse(filters) }, prodId: id };
   } else {
-    Comments.findAll({
-      order: [[`${field}`, 'DESC']],
-      limit: parseInt(limit, 10),
-      where: { prodId: id },
-    })
-      .then((result) => {
-        res.status(200).send(result);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    queryObj = { prodId: id };
   }
+
+  Comments.findAll({
+    order: [[`${field}`, 'DESC']],
+    limit: parseInt(limit, 10),
+    where: queryObj,
+  })
+    .then((result) => {
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
 }
 
 module.exports = {
   get: (req, res) => {
-    if (Object.keys(req.query).length > 0) {
+    let areQueryParams = Object.keys(req.query).length > 0;
+    if (areQueryParams) {
       queryParamsHandler(req, res);
     } else {
       const { id } = req.params;

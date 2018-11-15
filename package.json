@@ -16,7 +16,7 @@
     "test": "jest",
     "start": "nodemon ./server",
     "build": "webpack -w",
-    "seed": "node ./database/seed/seedData"
+    "seed": "node ./database/seed/generateData"
   },
   "repository": {
     "type": "git",
