@@ -27,6 +27,7 @@ const Comments = connection.define(
   },
   {
     createdAt: false,
+    updatedAt: false
   },
 );
 
