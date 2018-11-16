@@ -1,12 +1,13 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 
-mongoose.connect("mongodb://localhost/todolist");
+const db = mongoose.connect(`mongodb://localhost:27017/shoedidas_comments`);
 
-const connection = mongoose.connection;
+db
+  .then(() => console.log('Connected to mongo'))
+  .catch(err => {
+    console.log('There was a problem connecting to db')
+    console.log(err);
+  })
 
-connection.on("error", console.error.bind(console, "connection error"));
-
-connection.once("open", () => console.log("connected to mongodb"));
-
-module.exports = connection;
+module.exports = db;

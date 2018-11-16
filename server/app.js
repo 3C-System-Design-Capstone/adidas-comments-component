@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const path = require('path');
 const cors = require('cors');
 const router = require('./routes');
+const db = require('../database/index');
 
 const app = express();
 

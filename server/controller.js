@@ -1,7 +1,4 @@
-const Sequelize = require('sequelize');
 const Comments = require('../database/models');
-
-const { Op } = Sequelize;
 
 const queryParamsHandler = (req, res) => {
   const { id } = req.params;
@@ -15,20 +12,21 @@ const queryParamsHandler = (req, res) => {
     field = 'date';
   }
 
+  const orQuery = JSON.parse(filters).map((elt) => {
+    return { 'prodRating': elt }
+  })
+
   if (filters !== '[]') {
-    console.log(filters);
-    Comments.findAll({
-      order: [[`${field}`, 'DESC']],
-      limit: parseInt(limit, 10),
-      where: { prodRating: { [Op.or]: JSON.parse(filters) }, prodId: id },
-    })
-      .then((result) => {
-        res.status(200).send(result);
-      })
-      .catch((err) => {
-        console.error(err);
+    Comments.find({ $or: orQuery }).sort({ [field]: -1 }).limit(parseInt(limit))
+      .exec((err, posts) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.status(200).send(posts);
+        }
       });
   } else {
+    /*
     Comments.findAll({
       order: [[`${field}`, 'DESC']],
       limit: parseInt(limit, 10),
@@ -40,22 +38,25 @@ const queryParamsHandler = (req, res) => {
       .catch((err) => {
         console.error(err);
       });
+      */
   }
 }
 
 module.exports = {
+
   get: (req, res) => {
+
     if (Object.keys(req.query).length > 0) {
       queryParamsHandler(req, res);
     } else {
       const { id } = req.params;
-      Comments.findAll({ where: { prodId: id } })
-        .then((result) => {
-          res.status(200).send(result);
-        })
-        .catch((err) => {
+      Comments.find({ prodId: id }, (err, data) => {
+        if (err) {
           console.error(err);
-        });
+        } else {
+          res.status(200).send(data);
+        }
+      })
     }
   },
   post: (req, res) => {
