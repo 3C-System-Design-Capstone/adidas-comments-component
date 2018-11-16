@@ -4,6 +4,8 @@ const queryParamsHandler = (req, res) => {
   const { id } = req.params;
   const { type, limit, filters } = req.query;
   let field;
+  let query;
+
   if (type === 'relevant') {
     field = 'user';
   } else if (type === 'helpfulButton') {
@@ -12,34 +14,27 @@ const queryParamsHandler = (req, res) => {
     field = 'date';
   }
 
-  const orQuery = JSON.parse(filters).map((elt) => {
-    return { 'prodRating': elt }
-  })
 
   if (filters !== '[]') {
-    Comments.find({ $or: orQuery }).sort({ [field]: -1 }).limit(parseInt(limit))
-      .exec((err, posts) => {
-        if (err) {
-          console.log(err);
-        } else {
-          res.status(200).send(posts);
-        }
-      });
-  } else {
-    /*
-    Comments.findAll({
-      order: [[`${field}`, 'DESC']],
-      limit: parseInt(limit, 10),
-      where: { prodId: id },
+
+    const orQuery = JSON.parse(filters).map((elt) => {
+      return { 'prodRating': elt }
     })
-      .then((result) => {
-        res.status(200).send(result);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-      */
+
+    query = { prodId: id, $or: orQuery };
+
+  } else {
+    query = { prodId: id }
   }
+
+  Comments.find(query).sort({ [field]: -1 }).limit(parseInt(limit))
+    .exec((err, posts) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.status(200).send(posts);
+      }
+    });
 }
 
 module.exports = {
@@ -52,7 +47,7 @@ module.exports = {
       const { id } = req.params;
       Comments.find({ prodId: id }, (err, data) => {
         if (err) {
-          console.error(err);
+          res.send(err);
         } else {
           res.status(200).send(data);
         }
