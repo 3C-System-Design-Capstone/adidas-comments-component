@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const { Comments } = require('../database/models');
+const sizeof = require('object-sizeof');
 
 const { Op } = Sequelize;
 

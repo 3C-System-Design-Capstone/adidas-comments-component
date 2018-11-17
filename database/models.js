@@ -28,7 +28,7 @@ const Comments = connection.define(
   {
     createdAt: false,
     updatedAt: false
-  },
+  }
 );
 
 const Products = connection.define(
