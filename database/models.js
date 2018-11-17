@@ -31,13 +31,31 @@ const Comments = connection.define(
   },
 );
 
+const Products = connection.define(
+  'prod',
+  {
+    id: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: Sequelize.STRING,
+  },
+  {
+    createdAt: false,
+    updatedAt: false,
+  }
+)
+
+Comments.belongsTo(Products);
+
 connection
   .sync()
   .then(() => {
-    console.log('MySQL connection synced');
+    console.log('Postgres connection synced');
   })
   .catch((err) => {
     console.error('Synced failed: ', err);
   });
 
-module.exports = Comments;
+module.exports = { Comments, Products };

@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const Comments = require('../database/models');
+const { Comments } = require('../database/models');
 
 const { Op } = Sequelize;
 
@@ -26,6 +26,7 @@ const queryParamsHandler = (req, res) => {
     order: [[`${field}`, 'DESC']],
     limit: parseInt(limit, 10),
     where: queryObj,
+    benchmark: true,
   })
     .then((result) => {
       res.status(200).send(result);
