@@ -2,13 +2,11 @@ version: '3'
 services:
   db:
     restart: always
-    image: postgres 
     ports:
       - "5432:5432"
-    environment: 
-      - POSTGRES_USER=hayden
-      - POSTGRES_PASSWORD=hello
-      - POSTGRES_DB=shoedidas_comments_2
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
   app:
     env_file: .env 
     build: .
