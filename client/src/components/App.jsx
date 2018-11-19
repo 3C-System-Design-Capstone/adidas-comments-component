@@ -10,7 +10,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      prodId: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+      prodId: 999,
       data: [],
       percent: 0,
       overallRating: 0,
@@ -24,7 +24,7 @@ class App extends React.Component {
     this.handleLoadClick = this.handleLoadClick.bind(this);
     this.handleRateClick = this.handleRateClick.bind(this);
     this.handleRemoveFilterClick = this.handleRemoveFilterClick.bind(this);
-    axios.defaults.baseURL = 'http://' + process.env.HOSTNAME + ':' + process.env.PORT;
+    axios.defaults.baseURL = 'http://' + process.env.HOSTNAME + ':' + process.env.PORT_FOR_XHR;
   }
 
   componentDidMount() {
