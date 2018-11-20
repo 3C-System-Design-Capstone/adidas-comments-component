@@ -24,6 +24,12 @@ CREATE TABLE IF NOT EXISTS comments (
     "header" TEXT
 );
 
+COPY prods ("id", "name") FROM '/Users/hsb/Desktop/Data/Products.csv' delimiter as ',' null as ' ' csv header;
+COPY comments ("user", "prodRating", "yesRating", "noRating", date, body, verified, recommend, size, width, comfort, quality, response, "prodId", header) FROM '/Users/hsb/Desktop/Data/dataToSeed.csv' with delimiter as ',' null as ' ' csv header;
+
+CREATE INDEX on prods ('id');
+CREATE INDEX ON comments ('prodId');
+
 CREATE OR REPLACE FUNCTION update_average_rating_and_percent_recommended() 
 RETURNS TRIGGER 
 AS
