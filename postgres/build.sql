@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS prods CASCADE;
+DROP TABLE IF EXISTS comments;
+
 CREATE TABLE IF NOT EXISTS prods (
   "id" serial primary key,
   "name" VARCHAR(256),
@@ -27,8 +30,8 @@ CREATE TABLE IF NOT EXISTS comments (
 COPY prods ("id", "name") FROM '/Users/hsb/Desktop/Data/Products.csv' delimiter as ',' null as ' ' csv header;
 COPY comments ("user", "prodRating", "yesRating", "noRating", date, body, verified, recommend, size, width, comfort, quality, response, "prodId", header) FROM '/Users/hsb/Desktop/Data/dataToSeed.csv' with delimiter as ',' null as ' ' csv header;
 
-CREATE INDEX on prods ('id');
-CREATE INDEX ON comments ('prodId');
+CREATE INDEX on prods ("id");
+CREATE INDEX ON comments ("prodId");
 
 CREATE OR REPLACE FUNCTION update_average_rating_and_percent_recommended() 
 RETURNS TRIGGER 
@@ -51,3 +54,9 @@ CREATE TRIGGER update_avg
   ON comments
   FOR EACH ROW
   EXECUTE PROCEDURE update_average_rating_and_percent_recommended();
+
+-- backpopulate reccomended_percentage and percent_recommended
+
+UPDATE prods
+ 	SET average_rating = (SELECT AVG("prodRating") FROM comments WHERE "prodId" = prods.id),
+      percent_recommended = (SELECT (count(CASE WHEN recommend=true THEN 1 END) * 100) / count(recommend) FROM comments WHERE "prodId" = prods.id);

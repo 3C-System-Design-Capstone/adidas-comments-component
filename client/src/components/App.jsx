@@ -37,11 +37,15 @@ class App extends React.Component {
     }
   }
 
+
+  normalizeOverallRating(rating) {
+    return parseFloat(rating.toString().slice(0, 4));
+  }
+
   fetch(prodId) {
     axios
       .get(`/api/products/${prodId}/comments`)
       .then(result => {
-        console.log(result);
         this.setState({
           data: result.data,
         });
@@ -50,6 +54,16 @@ class App extends React.Component {
       .catch(err => {
         console.error('Fetch error, ', err);
       });
+    axios.get(`/api/products/${prodId}`)
+      .then(result => {
+        const percent = result.data.percent_recommended;
+        const overallRating = this.normalizeOverallRating(result.data.average_rating);
+
+        this.setState({
+          percent,
+          overallRating
+        })
+      })
   }
 
   fetchComments(type, limit, filters, prodId) {
@@ -67,15 +81,6 @@ class App extends React.Component {
   }
 
   extractInfo() {
-    let length = this.state.data.length;
-    let percent = 0;
-    let overallRating = 0;
-    this.state.data.forEach(comment => {
-      if (comment.recommend) {
-        percent += 1;
-      }
-      overallRating += comment.prodRating;
-    });
     this.setState({
       percent: Math.round((percent / length) * 100),
       overallRating: (overallRating / length).toFixed(1),

@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const { Comments } = require('../database/models');
+const { Comments, Products } = require('../database/models');
 const sizeof = require('object-sizeof');
 
 const { Op } = Sequelize;
@@ -44,7 +44,7 @@ module.exports = {
       queryParamsHandler(req, res);
     } else {
       const { id } = req.params;
-      Comments.findAll({ where: { prodId: id } })
+      Comments.findAll({ where: { id } })
         .then((result) => {
           res.status(200).send(result);
         })
