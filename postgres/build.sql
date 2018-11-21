@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS prods (
   "id" serial primary key,
   "name" VARCHAR(256),
   "average_rating" FLOAT(2),
-  "percent_recommended" FLOAT(2)
+  "percent_recommended" FLOAT(2),
+  "num_reviews_indexed_by_rating" INTEGER ARRAY[5]
 );
 
 CREATE TABLE IF NOT EXISTS comments (
@@ -40,7 +41,14 @@ $BODY$
   BEGIN
    UPDATE prods
 	  SET average_rating = (SELECT AVG("prodRating") FROM comments WHERE "prodId" = NEW."prodId"),
-        percent_recommended = (SELECT (count(CASE WHEN recommend=true THEN 1 END) * 100) / count(recommend) FROM comments WHERE "prodId" = NEW."prodId")
+        percent_recommended = (SELECT (count(CASE WHEN recommend=true THEN 1 END) * 100) / count(recommend) FROM comments WHERE "prodId" = NEW."prodId"),
+        num_reviews_indexed_by_rating = (SELECT ARRAY (
+          select count("id") from comments where "prodRating"=1 AND "prodId"=NEW."prodId" UNION ALL
+          select count("id") from comments where "prodRating"=2 AND "prodId"=NEW."prodId" UNION ALL
+          select count("id") from comments where "prodRating"=3 AND "prodId"=NEW."prodId" UNION ALL
+          select count("id") from comments where "prodRating"=4 AND "prodId"=NEW."prodId" UNION ALL
+          select count("id") from comments where "prodRating"=5 AND "prodId"=NEW."prodId"
+      ))
   	WHERE id = NEW."prodId";
    RETURN NEW;
   END;
@@ -55,8 +63,15 @@ CREATE TRIGGER update_avg
   FOR EACH ROW
   EXECUTE PROCEDURE update_average_rating_and_percent_recommended();
 
--- backpopulate reccomended_percentage and percent_recommended
+-- backpopulate reccomended_percentage, percent_recommended, and num_reviews_indexed_by_rating
 
 UPDATE prods
- 	SET average_rating = (SELECT AVG("prodRating") FROM comments WHERE "prodId" = prods.id),
-      percent_recommended = (SELECT (count(CASE WHEN recommend=true THEN 1 END) * 100) / count(recommend) FROM comments WHERE "prodId" = prods.id);
+  SET average_rating = (SELECT AVG("prodRating") FROM comments WHERE "prodId" = prods.id),
+  percent_recommended = (SELECT (count(CASE WHEN recommend=true THEN 1 END) * 100) / count(recommend) FROM comments WHERE "prodId" = prods.id),
+  num_reviews_indexed_by_rating = (SELECT ARRAY (
+    select count("id") from comments where "prodRating"=1 AND "prodId"=prods.id UNION ALL
+    select count("id") from comments where "prodRating"=2 AND "prodId"=prods.id UNION ALL
+    select count("id") from comments where "prodRating"=3 AND "prodId"=prods.id UNION ALL
+    select count("id") from comments where "prodRating"=4 AND "prodId"=prods.id UNION ALL
+    select count("id") from comments where "prodRating"=5 AND "prodId"=prods.id
+  ));
