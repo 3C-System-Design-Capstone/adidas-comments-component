@@ -15,6 +15,13 @@ app.use(morgan('dev'));
 
 app.use(express.static(path.join(__dirname, '/../client/dist')));
 
+/* middleware to allow compression of the bundle */
+app.get('*.js', function (req, res, next) {
+  req.url = req.url + '.gz';
+  res.set('Content-Encoding', 'gzip');
+  next();
+});
+
 app.use('/api', router);
 
 module.exports = app;
