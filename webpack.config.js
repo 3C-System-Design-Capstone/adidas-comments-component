@@ -1,6 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CompressionPlugin = require('compression-webpack-plugin');
+
 require('dotenv').config();
 
 module.exports = {
@@ -44,6 +46,13 @@ module.exports = {
       'process.env.PORT_FOR_XHR': JSON.stringify(process.env.PORT_FOR_XHR),
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
-    new BundleAnalyzerPlugin()
+    new BundleAnalyzerPlugin(),
+    new CompressionPlugin({
+      filename: '[path].gz[query]',
+      algorithm: 'gzip',
+      test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/,
+      threshold: 10240,
+      minRatio: 0,
+    })
   ],
 };
