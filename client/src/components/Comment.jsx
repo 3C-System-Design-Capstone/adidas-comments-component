@@ -2,7 +2,6 @@ import React from 'react';
 import styles from '../css/Comment.css';
 import Star from './Star';
 import CheckMark from './CheckMark';
-import moment from 'moment';
 
 const Comment = props => {
   let recommend = (
@@ -31,10 +30,11 @@ const Comment = props => {
       <div className={styles.container5}>
         <div className={styles.commentStars}>
           {props.ratingToStarTranslation(props.comment.prodRating).map((filling, i) => (
-            <Star filling={filling} key={i} id={Math.random()}/>
+            <Star filling={filling} key={i} id={Math.random()} />
           ))}
         </div>
-        <div className={styles.date}>{moment(props.comment.date).format('ll')}</div>
+        {console.log(props.comment.date)}
+        <div className={styles.date}>{(new Date('2018-01-18T09:22:28.280Z')).toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</div>
       </div>
       <div className={styles.commentHeader}>
         {props.comment.header === null ? '' : props.comment.header}

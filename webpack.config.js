@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 require('dotenv').config();
 
 module.exports = {
@@ -41,6 +42,8 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.HOSTNAME': JSON.stringify(process.env.HOSTNAME),
       'process.env.PORT_FOR_XHR': JSON.stringify(process.env.PORT_FOR_XHR),
+      'process.env.NODE_ENV': JSON.stringify('production')
     }),
+    new BundleAnalyzerPlugin()
   ],
 };
