@@ -5,26 +5,16 @@ import styles from '../css/Rating.css';
 const Rating = props => {
 
   const filterStatus = (
-      <div className={styles.filterStatus}>
-        Showing reviews:{' '}
-        <ul className={styles.filterList}>
-          {props.filters.map((star, i) => (
-            <li className={styles.filterListItem} key={i}>{star} STARS</li>
-          ))}
-        </ul>
-        <a className={styles.removeFilter} onClick={props.handleRemoveFilterClick}>Remove all filters</a>
-      </div>
-    );
-
-  const calculateStars = num => {
-    let count = 0;
-    props.data.forEach(comment => {
-      if (comment.prodRating === num) {
-        count += 1;
-      }
-    });
-    return count;
-  }
+    <div className={styles.filterStatus}>
+      Showing reviews:{' '}
+      <ul className={styles.filterList}>
+        {props.filters.map((star, i) => (
+          <li className={styles.filterListItem} key={i}>{star} STARS</li>
+        ))}
+      </ul>
+      <a className={styles.removeFilter} onClick={props.handleRemoveFilterClick}>Remove all filters</a>
+    </div>
+  );
 
   return (
     <div className={styles.ratingM}>
@@ -34,32 +24,32 @@ const Rating = props => {
         <StarListEntry
           id={5}
           handleRateClick={props.handleRateClick}
-          length={props.data.length}
-          count={calculateStars(5)}
+          totalNumReviews={props.totalNumReviews}
+          count={props.numReviewsIndexedByRating[4]}
         />
         <StarListEntry
           id={4}
           handleRateClick={props.handleRateClick}
-          length={props.data.length}
-          count={calculateStars(4)}
+          totalNumReviews={props.totalNumReviews}
+          count={props.numReviewsIndexedByRating[3]}
         />
         <StarListEntry
           id={3}
           handleRateClick={props.handleRateClick}
-          length={props.data.length}
-          count={calculateStars(3)}
+          totalNumReviews={props.totalNumReviews}
+          count={props.numReviewsIndexedByRating[2]}
         />
         <StarListEntry
           id={2}
           handleRateClick={props.handleRateClick}
-          length={props.data.length}
-          count={calculateStars(2)}
+          totalNumReviews={props.totalNumReviews}
+          count={props.numReviewsIndexedByRating[1]}
         />
         <StarListEntry
           id={1}
           handleRateClick={props.handleRateClick}
-          length={props.data.length}
-          count={calculateStars(1)}
+          totalNumReviews={props.totalNumReviews}
+          count={props.numReviewsIndexedByRating[0]}
         />
       </ul>
     </div>

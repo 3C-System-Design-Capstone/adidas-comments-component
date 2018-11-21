@@ -14,12 +14,14 @@ class App extends React.Component {
       data: [],
       percent: 0,
       overallRating: 0,
+      numReviewsIndexedByRating: [0, 0, 0, 0, 0],
+      totalNumReviews: 0,
       view: 'relevant',
       limit: 2,
       comments: [],
       filters: [],
     };
-    this.extractInfo = this.extractInfo.bind(this);
+    //this.extractInfo = this.extractInfo.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleLoadClick = this.handleLoadClick.bind(this);
     this.handleRateClick = this.handleRateClick.bind(this);
@@ -49,7 +51,7 @@ class App extends React.Component {
         this.setState({
           data: result.data,
         });
-        this.extractInfo();
+        //this.extractInfo();
       })
       .catch(err => {
         console.error('Fetch error, ', err);
@@ -58,10 +60,14 @@ class App extends React.Component {
       .then(result => {
         const percent = result.data.percent_recommended;
         const overallRating = this.normalizeOverallRating(result.data.average_rating);
-
+        const numReviewsIndexedByRating = result.data.num_reviews_indexed_by_rating;
+        const totalNumReviews = numReviewsIndexedByRating.reduce((acc, elt) => acc + elt);
+        console.log(result)
         this.setState({
           percent,
-          overallRating
+          overallRating,
+          numReviewsIndexedByRating,
+          totalNumReviews
         })
       })
   }
@@ -80,12 +86,14 @@ class App extends React.Component {
       });
   }
 
+  /*
   extractInfo() {
     this.setState({
       percent: Math.round((percent / length) * 100),
       overallRating: (overallRating / length).toFixed(1),
     });
   }
+  */
 
   ratingToStarTranslation(rating) {
     let arr = Array(5).fill('0%');
@@ -111,7 +119,7 @@ class App extends React.Component {
   }
 
   handleLoadClick() {
-    if (this.state.limit <= this.state.data.length) {
+    if (this.state.limit <= this.state.totalNumReviews) {
       let addition = this.state.limit + 5;
       this.setState({
         limit: addition,
@@ -166,7 +174,7 @@ class App extends React.Component {
             <OverallRating
               ratingToStarTranslation={this.ratingToStarTranslation}
               rating={this.state.overallRating}
-              data={this.state.data}
+              totalNumReviews={this.state.totalNumReviews}
             />
             <div className={styles.percentage}>
               <div className={styles.percent}>{this.state.percent}%</div>
@@ -177,7 +185,8 @@ class App extends React.Component {
             <div className={styles.container4}>
               <Rating
                 handleRateClick={this.handleRateClick}
-                data={this.state.data}
+                totalNumReviews={this.state.totalNumReviews}
+                numReviewsIndexedByRating={this.state.numReviewsIndexedByRating}
                 filters={this.state.filters}
                 handleRemoveFilterClick={this.handleRemoveFilterClick}
               />

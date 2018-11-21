@@ -28,6 +28,10 @@ CREATE TABLE IF NOT EXISTS comments (
     "header" TEXT
 );
 
+-- I am hardcoding user here!! How do I avoid this?
+
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO hayden;
+
 COPY prods ("id", "name") FROM '/Users/hsb/Desktop/Data/Products.csv' delimiter as ',' null as ' ' csv header;
 COPY comments ("user", "prodRating", "yesRating", "noRating", date, body, verified, recommend, size, width, comfort, quality, response, "prodId", header) FROM '/Users/hsb/Desktop/Data/dataToSeed.csv' with delimiter as ',' null as ' ' csv header;
 

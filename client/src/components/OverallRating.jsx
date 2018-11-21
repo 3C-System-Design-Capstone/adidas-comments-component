@@ -8,11 +8,11 @@ const OverallRating = props => (
     <div className={styles.container2}>
       <div className={styles.ratingStars}>
         {props.ratingToStarTranslation(props.rating).map((filling, i) => (
-          <Star filling={filling} key={i} id={Math.random()}/>
+          <Star filling={filling} key={i} id={Math.random()} />
         ))}
       </div>
       <span className={styles.reviewNumber}>
-        <strong className={styles.bold}>{props.data.length}</strong> Reviews
+        <strong className={styles.bold}>{props.totalNumReviews}</strong> Reviews
       </span>
     </div>
   </div>

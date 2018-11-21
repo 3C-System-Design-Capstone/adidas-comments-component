@@ -6,7 +6,8 @@ const StarListEntry = props => (
     <li className={styles.starListEntry}>
       <div className={styles.starRating}>{props.id} STARS</div>
       <div className={styles.starPercentage}>
-        <div className={styles.filled} style={{width: `${(props.count/props.length * 100)}%`}}></div>
+        {console.log(props.totalNumReviews)}
+        <div className={styles.filled} style={{ width: `${(props.count / props.totalNumReviews) * 100}%` }}></div>
       </div>
       <div className={styles.starCount}>{props.count}</div>
     </li>
