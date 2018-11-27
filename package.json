@@ -17,7 +17,9 @@
     "start": "nodemon ./server",
     "build-production": "webpack",
     "build": "webpack -w",
-    "seed": "node ./database/seed/generateData"
+    "generateProducts": "node ./database/seed/generateProducts",
+    "generateComments": "node --max-old-space-size=8192 ./database/seed/generateComments",
+    "seed": ""
   },
   "repository": {
     "type": "git",
@@ -31,6 +33,7 @@
   },
   "homepage": "https://github.com/FEC-MOTH/matthew-module#readme",
   "dependencies": {
+    "@newrelic/native-metrics": "^3.1.2",
     "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -53,6 +56,7 @@
     "morgan": "^1.9.1",
     "mysql": "^2.16.0",
     "mysql2": "^1.6.1",
+    "newrelic": "^4.11.0",
     "nodemon": "^1.18.4",
     "object-sizeof": "^1.3.0",
     "path": "^0.12.7",

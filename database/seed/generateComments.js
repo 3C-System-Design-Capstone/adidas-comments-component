@@ -1,8 +1,8 @@
 const faker = require('faker');
 const fs = require('fs');
-const dataToSeed = fs.createWriteStream('./database/dataToSeed.csv');
+const dataToSeed = fs.createWriteStream('./postgres/data/comments.csv');
 
-//dataToSeed.write('user, prodRating, yesRating, noRating, date, body, verified, recommend, size, width, comfort, quality, response, prodId, header\n');
+dataToSeed.write('user, prodRating, yesRating, noRating, date, body, verified, recommend, size, width, comfort, quality, response, prodId, header\n');
 
 console.time("generateData");
 

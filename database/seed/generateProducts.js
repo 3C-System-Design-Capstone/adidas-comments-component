@@ -1,6 +1,6 @@
 const faker = require('faker');
 const fs = require('fs');
-const dataToSeed = fs.createWriteStream('./database/Products.csv');
+const dataToSeed = fs.createWriteStream('./postgres/data/products.csv');
 
 dataToSeed.write('id, name\n');
 

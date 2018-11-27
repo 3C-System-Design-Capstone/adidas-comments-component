@@ -1,7 +1,9 @@
 node_modules
 client/dist/bundle.js
 client/dist/bundle.js.gz
+postgres/data
 config.js
 coverage
 .env
 *.csv
+newrelic_agent.log

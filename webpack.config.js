@@ -46,7 +46,6 @@ module.exports = {
       'process.env.PORT_FOR_XHR': JSON.stringify(process.env.PORT_FOR_XHR),
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
-    new BundleAnalyzerPlugin(),
     new CompressionPlugin({
       filename: '[path].gz[query]',
       algorithm: 'gzip',
