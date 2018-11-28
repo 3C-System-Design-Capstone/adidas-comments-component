@@ -1,8 +1,8 @@
 config:
-  target: 'http://localhost:1128'
+  target: 'http://localhost:80'
   phases:
-    - duration: 15
-      arrivalRate: 500
+    - duration: 20
+      arrivalRate: 100
   processor: "./artilleryUtilities.js"
 
 scenarios:

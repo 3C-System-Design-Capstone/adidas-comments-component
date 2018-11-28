@@ -10,6 +10,11 @@ COPY . .
 
 EXPOSE 80
 
+# I include these environment variables in the dockerfile, because 
+# they are the ones passed to the front-end via webpack
+# all other environment variables are loaded after the server starts and, so, 
+# can be passed in using the node package require('dotenv').config();
+# TODO. It might be less confusing just to pass all env vars in here
 ARG HOSTNAME
 ENV HOSTNAME localhost
 

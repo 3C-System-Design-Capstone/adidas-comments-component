@@ -1,4 +1,5 @@
 require('newrelic');
+//const statsd = require('express-statsd');
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
@@ -7,6 +8,14 @@ const cors = require('cors');
 const router = require('./routes');
 
 const app = express();
+
+//app.use(statsd());
+
+const StatsD = require('hot-shots');
+const dogstatsd = new StatsD();
+
+// Increment a counter.
+dogstatsd.increment('page.views')
 
 app.use(cors());
 
