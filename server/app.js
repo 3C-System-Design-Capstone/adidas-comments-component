@@ -6,8 +6,18 @@ const morgan = require('morgan');
 const path = require('path');
 const cors = require('cors');
 const router = require('./routes');
+const Redis = require('ioredis');
 
 const app = express();
+
+// connect to Redis
+const REDIS_URL = process.env.REDIS_URL;
+const redis = new Redis(6379, REDIS_URL);
+
+redis.set('foo', 'bar');
+redis.get('hi', function (err, result) {
+  console.log(result);
+});
 
 //app.use(statsd());
 
