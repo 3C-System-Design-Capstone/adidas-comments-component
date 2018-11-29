@@ -23,7 +23,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
+/* Stop serving up static assets. nginx should serve these
 app.use(express.static(path.join(__dirname, '/../client/dist')));
+*/
 
 /* middleware to allow compression of the bundle */
 app.get('*.js', function (req, res, next) {
