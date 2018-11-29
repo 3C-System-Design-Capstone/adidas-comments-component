@@ -8,6 +8,7 @@ const connection = new Sequelize(
   {
     host: process.env.DB_HOSTNAME,
     dialect: 'postgres',
+    logging: false,
   },
 );
 
