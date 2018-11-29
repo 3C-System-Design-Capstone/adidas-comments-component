@@ -6,18 +6,8 @@ const morgan = require('morgan');
 const path = require('path');
 const cors = require('cors');
 const router = require('./routes');
-const Redis = require('ioredis');
-
 const app = express();
-
-// connect to Redis
-const REDIS_URL = process.env.REDIS_URL;
-const redis = new Redis(6379, REDIS_URL);
-
-redis.set('foo', 'bar');
-redis.get('hi', function (err, result) {
-  console.log(result);
-});
+const redis = require('../database/redis/index');
 
 //app.use(statsd());
 
@@ -33,6 +23,22 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //app.use(morgan('dev'));
+
+app.use(function (req, res, next) {
+  redis.get(req.path, function (err, result) {
+    if (err) {
+      console.log(err);
+      next();
+    } else {
+      if (!result) {
+        next();
+      } else {
+        res.send(result);
+      }
+    }
+  })
+})
+
 
 /* Stop serving up static assets. nginx should serve these
 app.use(express.static(path.join(__dirname, '/../client/dist')));

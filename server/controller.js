@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 const { Comments, Products } = require('../database/models');
 const sizeof = require('object-sizeof');
-
 const { Op } = Sequelize;
+const redis = require('../database/redis/index');
 
 const queryParamsHandler = (req, res) => {
   const { id } = req.params;
@@ -30,6 +30,7 @@ const queryParamsHandler = (req, res) => {
     benchmark: true,
   })
     .then((result) => {
+      redis.set(req.originalUrl, JSON.stringify(result));
       res.status(200).send(result);
     })
     .catch((err) => {
@@ -46,6 +47,7 @@ module.exports = {
       const { id } = req.params;
       Comments.findAll({ where: { id } })
         .then((result) => {
+          redis.set(req.originalUrl, JSON.stringify(result));
           res.status(200).send(result);
         })
         .catch((err) => {
