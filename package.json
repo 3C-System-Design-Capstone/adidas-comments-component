@@ -14,7 +14,8 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "nodemon ./server",
+    "start": "node ./server",
+    "start-dev": "nodemon ./server",
     "build-production": "webpack",
     "build": "webpack -w",
     "generateProducts": "node ./database/seed/generateProducts",
