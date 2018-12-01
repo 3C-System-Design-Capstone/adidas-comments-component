@@ -1,3 +1,4 @@
+/*
 const Sequelize = require('sequelize');
 const connection = require('./');
 
@@ -59,3 +60,4 @@ connection
   });
 
 module.exports = { Comments, Products };
+*/
