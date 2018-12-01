@@ -1,3 +1,7 @@
+\copy prods ("id", "name","average_rating","percent_recommended","num_reviews_indexed_by_rating") FROM './big_data/products.csv' delimiter as ',' null as ' ' csv header;
+\copy comments ("user", "prodRating", "yesRating", "noRating", "date", "body", "verified", "recommend", "size", "width", "comfort", "quality", "response", "prodId", "header") FROM '/Users/hsb/Desktop/big_data/comments.csv' delimiter as ',' null as ' ' csv header;
+
+
 -- DROP TABLE IF EXISTS prods CASCADE;
 -- DROP TABLE IF EXISTS comments;
 
